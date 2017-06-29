@@ -1,0 +1,31 @@
+{
+  "short_name": "transit.London",
+  "name":"transit.London",
+  "icons":[
+    {
+      "src":"static/icons/logo-256.png",
+      "sizes":"256x256",
+      "type":"image/png"
+    },
+    {
+      "src":"static/icons/logo-128.png",
+      "sizes":"128x128",
+      "type":"image/png"
+    },
+    {
+      "src":"static/icons/logo-64.png",
+      "sizes":"64x64",
+      "type":"image/png"
+    },
+    {
+      "src":"static/icons/logo-32.png",
+      "sizes":"32x32",
+      "type":"image/png"
+    }
+  ],
+  "start_url":"index.html",
+  "display":"standalone",
+  "orientation":"portrait",
+  "theme_color": "#fff",
+  "background_color": "#fff"
+}

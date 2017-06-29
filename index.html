@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>transit.London</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-purple.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!--AIzaSyCYzHBFcEmiF_wFc_PURfh6ZAd7HRNIvhU-->
+    <link href="assets/stylesheets/style.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">transit.London</span>
+          <div class="mdl-layout-spacer"></div>
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+          </nav>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">transit.London</span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+          <a class="mdl-navigation__link" href="">Link</a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+          <div id="map">
+
+          </div>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+          <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+          <script>
+            var config = {
+              apiKey: "AIzaSyDwmvyMN81MfGlub_hXfvNc979sCwE_87Y",
+              authDomain: "turing-poet-127712.firebaseapp.com",
+              databaseURL: "https://turing-poet-127712.firebaseio.com",
+              projectId: "turing-poet-127712",
+              storageBucket: "turing-poet-127712.appspot.com",
+              messagingSenderId: "310818430550"
+            };
+            firebase.initializeApp(config);
+
+            db = firebase.database().ref();
+
+            db.on("value", function (data) {
+              coords = data.child("coords").val();
+              $.each(coords, function (k, v) {
+                latLng = new google.maps.LatLng(v.lat, v.lng);
+                marker = new google.maps.Marker({
+                  position: latLng,
+                  map: map,
+                  icon: "static/icons/"+v.type+".png"
+                })
+              })
+            })
+            </script>
+            <script>
+            var map;
+            function initMap() {
+              map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: new google.maps.LatLng(25.160853, 75.324686)
+              });
+            }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYzHBFcEmiF_wFc_PURfh6ZAd7HRNIvhU&callback=initMap"></script>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
