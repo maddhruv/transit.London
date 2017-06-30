@@ -11,7 +11,39 @@
     <link href="assets/stylesheets/style.min.css" rel="stylesheet">
   </head>
   <body>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <div id="splash" class="window">
+      <div class="content">
+        <img src="static/icons/logo-128.png" id="logo">
+        <h1>transit.London</h1>
+        <div id="loader" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+        <button style="display:none" id="getIn" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+      </div>
+    </div>
+
+    <div id="selector" class="window" style="display:none">
+      <div class="content">
+        <div class="">
+          <label for="vehicleType">
+            Select Vehicle Type:
+          </label>
+          <select id="vehicleType" class="" name="">
+            <option value="bus">Bus</option>
+            <option value="taxi">Taxi</option>
+            <option value="cycle">Cycle</option>
+            <option value="ship">Ship</option>
+          </select>
+        </div>
+        <div id="busAnime">
+          <img src="static/icons/moving-bus.png">
+        </div>
+        <button id="ok" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+      </div>
+    </div>
+    <div id="main" style="display:none;" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
           <span class="mdl-layout-title">transit.London</span>
@@ -42,6 +74,7 @@
           <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
           <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
           <script>
+            var currentLat, currentLng, vehicle;
             var config = {
               apiKey: "AIzaSyDwmvyMN81MfGlub_hXfvNc979sCwE_87Y",
               authDomain: "turing-poet-127712.firebaseapp.com",
@@ -53,16 +86,58 @@
             firebase.initializeApp(config);
 
             db = firebase.database().ref();
+            auth = firebase.auth();
+
+            auth.onAuthStateChanged(function(e){
+              if(e){
+                $("#splash").hide();
+                $("#selector").hide();
+                $("#main").show();
+                user = e.uid;
+                userDbRef = db.child("coords").child(user)
+                userDbRef.set({
+                  type: vehicle,
+                  lat: currentLat,
+                  lng: currentLng
+                })
+              } else{
+                $("#loader").hide();
+                $("#getIn").show();
+              }
+            })
+
+            $("#getIn").on("click", function(){
+              $("#splash").hide();
+              $("#selector").show();
+            })
+
+            $("#ok").on("click", function(){
+              vehicle = $("#vehicleType").val();
+              auth.signInAnonymously();
+            })
+
+            navigator.geolocation.getCurrentPosition(function (coord) {
+              currentLat = coord.coords.latitude;
+              currentLng = coord.coords.longitude;
+            });
+
+            markers = [];
 
             db.on("value", function (data) {
+              $.each(markers, function (k, v) {
+                v.setMap(null);
+              });
+
               coords = data.child("coords").val();
               $.each(coords, function (k, v) {
                 latLng = new google.maps.LatLng(v.lat, v.lng);
                 marker = new google.maps.Marker({
                   position: latLng,
                   map: map,
-                  icon: "static/icons/"+v.type+".png"
+                  icon: "static/icons/"+v.type+".png",
+                  title: v.title
                 })
+                markers.push(marker);
               })
             })
             </script>

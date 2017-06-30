@@ -1,3 +1,81 @@
+$primary: #13818D;
+$selectBg: rgba(255, 255, 255, 0.9);
+body{
+  overflow: hidden;
+}
+.window{
+  height: 100vh;
+  width: 100vw;
+  display: block;
+  content: '';
+  text-align: center;
+  align-items: center;
+  margin: 0 auto;
+}
+#splash{
+  #logo{
+    display: block;
+    margin: auto;
+    position: relative;
+    text-align: center;
+    top: 10%;
+  }
+  h1{
+    color: $primary;
+    margin-top: 50px;
+  }
+  #loader{
+    width: 80%;
+    margin: auto;
+    margin-top: 35%;
+  }
+  #getIn{
+    position: fixed;
+    bottom: 5%;
+    right: 10%;
+  }
+}
+
+#selector{
+  padding-top: 10%;
+  select{
+    background-color: $selectBg;
+    width: 80%;
+    margin: auto;
+    padding: 5px;
+    border: 1px solid #f2f2f2;
+    border-radius: 2px;
+    height: 3rem;
+    option{
+      background: darken($selectBg, 5);
+      height: 2rem;
+    }
+  }
+  #ok{
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+  }
+  @keyframes bus{
+    from{left: -66%}
+    to{left: 66%}
+  }
+  #busAnime{
+    width: 100vw;
+    margin-top: 120px;
+    position: absolute;
+    img{
+      position: relative;
+      animation: bus 6s infinite;
+      animation-timing-function: linear;
+    }
+  }
+}
+.content{
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
 #map{
   height: 95vh;
   width: 100%;
